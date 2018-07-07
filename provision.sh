@@ -5,7 +5,7 @@ yum update -y
 
 echo "==> Disabling SWAP..."
 swapoff -a
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 echo "==> Setting hostname..."
 hostnamectl set-hostname kubernetes
