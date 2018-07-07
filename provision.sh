@@ -14,7 +14,7 @@ echo "===> Adding hostname to /etc/hosts..."
 echo "10.69.0.210  kubernetes" >> /etc/hosts
 
 echo "==> Disabling SELinux..."
-sed -i 's/SELINUX=enforcing/SELINUX=disabled/g'/etc/selinux/config
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 setenforce 0
 
 echo "===> Disabling Firewalld..."
@@ -69,7 +69,7 @@ chown $(id -u vagrant):$(id -g vagrant) /home/vagrant/.kube/config
 echo "==> Disabling Master Node Isolation..."
 kubectl --kubeconfig /etc/kubernetes/admin.conf taint nodes --all node-role.kubernetes.io/master-
 
-echo "==> Installink pod network add-on..."
+echo "==> Installing pod network add-on..."
 kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/coreos/flannel/v0.10.0/Documentation/kube-flannel.yml
 
 echo "==> All set and ready"
