@@ -1,5 +1,8 @@
 #! /bin/sh
 
+IPADDRESS=10.0.0.210
+HOSTNAME="kubernetes"
+
 echo "==> Updating system..."
 yum update -y
 
@@ -8,10 +11,10 @@ swapoff -a
 sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 echo "==> Setting hostname..."
-hostnamectl set-hostname kubernetes
+hostnamectl set-hostname $HOSTNAME
 
 echo "===> Adding hostname to /etc/hosts..."
-echo "10.69.0.210  kubernetes" >> /etc/hosts
+echo "$IPADDRESS  $HOSTNAME" >> /etc/hosts
 
 echo "==> Disabling SELinux..."
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
@@ -59,7 +62,7 @@ EOF
 sysctl --system
 
 echo "==> Kubernetes Initialization..."
-kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=10.69.0.210
+kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=$IPADDRESS
 
 echo "==> Copying credentials to /home/vagrant..."
 sudo --user=vagrant mkdir -p /home/vagrant/.kube
