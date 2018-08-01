@@ -1,0 +1,30 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: gitea
+  labels:
+    app: gitea
+spec:
+  selector:
+    matchLabels:
+      app: gitea
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: gitea
+    spec:
+      containers:
+      - image: docker.io/gitea/gitea:1.5
+        name: gitea
+        ports:
+        - containerPort: 3000
+          name: gitea
+        volumeMounts:
+        - name: gitea-persistent-storage
+          mountPath: /data
+      volumes:
+      - name: gitea-persistent-storage
+        persistentVolumeClaim:
+          claimName: gitea-pv-claim
